@@ -2,11 +2,13 @@
   <div class="options-container">
     <ul>
       <li
+      as="button"
         v-for="pokemon in pokemons"
         :key="pokemon.id"
-        @click="$emit('selection', pokemon.id)"
       >
-        {{ pokemon.name }}
+        <button
+        :disabled="showOptions ? false : true"
+        @click="$emit('selection', pokemon.id)">{{pokemon.name}}</button>
       </li>
     </ul>
   </div>
@@ -19,7 +21,21 @@ export default {
       type: Array,
       required: true,
     },
+    showOptions: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
+  created() {
+    // props are exposed on `this`
+    console.log('Component showOptions :'+this.showOptions)
+  },
+  watch :{
+    showOptions() {
+      console.log('Component showOptions: '+this.showOptions)
+    }
+  }
 };
 </script>
 
@@ -41,6 +57,10 @@ li {
 
 li:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+li:disabled {
+  pointer-events:none; 
+  opacity:0.6;      
 }
 
 .options-container {
